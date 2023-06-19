@@ -2,7 +2,7 @@
 
 ## Introduction
 
-This project is an example project to demonstrate how to document the information for your project in this README. Every repository in the UoA-CARES-Student group should have README to provide the minimum knowledge of your project to collaborators. This README is just an example, and your one may have different styles of this. Please keep in mind that README is for collaborators who haven't had any background on your project. That is, you shouldn't assume that they have a similar system environment to yours.
+The following are a set of python projects for filtering and down sampling point clouds, then creating a mesh.
 
 ## Prerequisites
 
