@@ -1,4 +1,4 @@
-# example-project
+# Creating a mesh from plant point clouds
 
 ## Introduction
 
