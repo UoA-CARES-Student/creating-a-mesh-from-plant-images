@@ -13,7 +13,7 @@ pip3 install virtualenv
 Then create the virtual environment folder, where the version is the locally installed version of python and the venv is the folder name or path to where you want the virtual environment folder to be created
 
 ```
-python3.10 -m venv venv
+virtualenv -p python3.10 venv
 ```
 
 Next run the correct activation script to start the virtual environment
