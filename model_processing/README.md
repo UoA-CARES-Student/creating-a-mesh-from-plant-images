@@ -47,3 +47,25 @@ deactivate
 ```
 
 ## Running the Projects
+
+## Troubleshooting
+
+If you have a M1 Mac book and getting the following error you must install libomp with homebrew
+
+```
+Traceback (most recent call last):
+  File "<string>", line 1, in <module>
+  File "/Users/.../creating-a-mesh-from-plant-images/model_processing/venv/lib/python3.9/site-packages/open3d/__init__.py", line 93, in <module>
+    from open3d.cpu.pybind import (core, camera, data, geometry, io, pipelines,
+ImportError: dlopen(/Users/.../creating-a-mesh-from-plant-images/model_processing/venv/lib/python3.9/site-packages/open3d/cpu/pybind.cpython-39-darwin.so, 0x0002): Library not loaded: /opt/homebrew/opt/libomp/lib/libomp.dylib
+  Referenced from: <6C0FB50D-E600-3D2F-AF11-C0935C1FBD7C> /Users/.../creating-a-mesh-from-plant-images/model_processing/venv/lib/python3.9/site-packages/open3d/cpu/pybind.cpython-39-darwin.so
+  Reason: tried: '/opt/homebrew/opt/libomp/lib/libomp.dylib' (no such file), '/System/Volumes/Preboot/Cryptexes/OS/opt/homebrew/opt/libomp/lib/libomp.dylib' (no such file), '/opt/homebrew/opt/libomp/lib/libomp.dylib' (no such file), '/usr/local/lib/libomp.dylib' (no such file), '/usr/lib/libomp.dylib' (no such file, not in dyld cache)
+```
+
+See here to install homebrew https://brew.sh/
+
+Then run
+
+```
+brew install libomp
+```
