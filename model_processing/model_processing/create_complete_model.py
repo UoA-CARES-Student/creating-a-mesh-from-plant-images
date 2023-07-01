@@ -1,6 +1,8 @@
-import open3d as o3d
+"""Module providing functions for combining multiple point cloud files into a 
+single point cloud file"""
 import glob
 import os
+import open3d as o3d
 
 print("Starting point cloud combination")
 absolute_path = os.path.abspath(".")
