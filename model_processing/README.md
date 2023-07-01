@@ -29,8 +29,8 @@ For Linux and Mac
 For Windows
 | Shell | Command |
 | ----------- | ----------- |
-| cmd.exe | `C:\> venv\Scripts\activate.bat`|
-| PowerShell | `PS C:\> venv\Scripts\Activate.ps1`|
+| cmd.exe | `venv\Scripts\activate.bat`|
+| PowerShell | `venv\Scripts\Activate.ps1`|
 
 On success the terminal path should includes env, signifying an activated virtual environment.
 
