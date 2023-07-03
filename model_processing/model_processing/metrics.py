@@ -7,8 +7,11 @@ def mean_square_error_test_one(processed_point_cloud, target_point_cloud):
     """Return a float representing the mse between the point clouds
     Implementation of MSE algorithm from https://arxiv.org/abs/1807.00253
     """
-    processed_point_cloud_array = np.array(processed_point_cloud)
-    target_point_cloud_array = np.array(target_point_cloud)
+    print("starting mean square error test")
+    processed_point_cloud_array = np.asarray(processed_point_cloud.points)
+    target_point_cloud_array = np.asarray(target_point_cloud.points)
+    print("processed point cloud array shape: ", processed_point_cloud_array.shape)
+    print("target point cloud array shape: ", target_point_cloud_array.shape)
     distance_sum = calc_distance_between_points_test_one(
         processed_point_cloud_array, target_point_cloud_array
     )
@@ -19,8 +22,8 @@ def mean_square_error_test_two(processed_point_cloud, target_point_cloud):
     """Return a float representing the mse between the point clouds
     Implementation of MSE algorithm from https://www.ncbi.nlm.nih.gov/pmc/articles/PMC9002461/
     """
-    processed_point_cloud_array = np.array(processed_point_cloud)
-    target_point_cloud_array = np.array(target_point_cloud)
+    processed_point_cloud_array = np.asarray(processed_point_cloud.points)
+    target_point_cloud_array = np.asarray(target_point_cloud.points)
 
     section_one, section_two = calc_distance_between_points_test_two(
         processed_point_cloud_array, target_point_cloud_array
@@ -33,8 +36,8 @@ def signal_to_noise_ratio_test_one(processed_point_cloud, target_point_cloud):
     """Return a float representing the snr between the point clouds
     Implementation of MSE algorithm from https://arxiv.org/abs/1807.00253
     """
-    processed_point_cloud_array = np.array(processed_point_cloud)
-    target_point_cloud_array = np.array(target_point_cloud)
+    processed_point_cloud_array = np.asarray(processed_point_cloud.points)
+    target_point_cloud_array = np.asarray(target_point_cloud.points)
 
     sum_processed_point_cloud = 0.0
     for p_i in np.nditer(processed_point_cloud_array):
@@ -51,8 +54,8 @@ def signal_to_noise_ratio_test_two(processed_point_cloud, target_point_cloud):
     """Return a float representing the snr between the point clouds
     Implementation of MSE algorithm from https://www.ncbi.nlm.nih.gov/pmc/articles/PMC9002461/
     """
-    processed_point_cloud_array = np.array(processed_point_cloud)
-    target_point_cloud_array = np.array(target_point_cloud)
+    processed_point_cloud_array = np.asarray(processed_point_cloud.points)
+    target_point_cloud_array = np.asarray(target_point_cloud.points)
 
     sum_processed_point_cloud = 0.0
     for p_i in np.nditer(processed_point_cloud_array):
@@ -76,7 +79,8 @@ def calc_distance_between_points_test_one(
     distance_sum = 0.0
     for p_i in np.nditer(processed_point_cloud_array):
         for p_j in np.nditer(target_point_cloud_array):
-            distance_sum += np.linalg.norm(p_i - p_j)
+            distance_sum += np.linalg.norm(p_i - p_j) ** 2
+        print("Done - ", p_i)
     return distance_sum
 
 
@@ -88,7 +92,7 @@ def calc_distance_between_points_test_two(
     for p_i in np.nditer(processed_point_cloud_array):
         min_distance = -1
         for p_j in np.nditer(target_point_cloud_array):
-            distance = np.linalg.norm(p_i - p_j)
+            distance = np.linalg.norm(p_i - p_j) ** 2
             if min_distance == -1 or distance < min_distance:
                 min_distance = distance
         distance_sum += min_distance
@@ -98,7 +102,7 @@ def calc_distance_between_points_test_two(
     for p_i in np.nditer(target_point_cloud_array):
         min_distance = -1
         for p_j in np.nditer(processed_point_cloud_array):
-            distance = np.linalg.norm(p_i - p_j)
+            distance = np.linalg.norm(p_i - p_j) ** 2
             if min_distance == -1 or distance < min_distance:
                 min_distance = distance
         distance_sum += min_distance
