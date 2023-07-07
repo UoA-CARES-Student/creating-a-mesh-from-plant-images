@@ -1,5 +1,6 @@
 input/*.ply
 output/*.ply
+input/data/*.ply
 
 
 # Created by https://www.toptal.com/developers/gitignore/api/python,venv

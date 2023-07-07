@@ -3,7 +3,8 @@ single point cloud file"""
 import glob
 import os
 import open3d as o3d
-from metrics import *
+from metrics import mean_square_error_two, signal_to_noise_ratio_two
+import numpy as np
 
 print("Starting validation")
 absolute_path = os.path.abspath(".")
@@ -15,10 +16,19 @@ if len(processed_point_cloud_path) == 0 or len(target_point_cloud_path) == 0:
 else:
     processed_point_cloud = o3d.io.read_point_cloud(processed_point_cloud_path[0])
     target_point_cloud = o3d.io.read_point_cloud(target_point_cloud_path[0])
+
+    print("Processed point cloud visualization")
     o3d.visualization.draw_geometries([processed_point_cloud])
+    print("Target point cloud visualization")
     o3d.visualization.draw_geometries([target_point_cloud])
-    print(
-        "mse 1 : "
-        + mean_square_error_test_one(processed_point_cloud, target_point_cloud)
+
+    processed_point_cloud_array = np.asarray(processed_point_cloud.points)
+    target_point_cloud_array = np.asarray(target_point_cloud.points)
+
+    mse = mean_square_error_two(processed_point_cloud_array, target_point_cloud_array)
+    print("mse 2 : ", mse)
+    snr = signal_to_noise_ratio_two(
+        processed_point_cloud_array, target_point_cloud_array
     )
+    print("snr 2 : ", snr)
     print("Done!")
