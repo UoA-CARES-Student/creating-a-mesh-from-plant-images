@@ -4,5 +4,5 @@
     "editor.formatOnSave": true
   },
   "python.formatting.provider": "none",
-  "cSpell.words": ["linalg", "nditer", "numba"]
+  "cSpell.words": ["linalg", "nditer", "numba", "ruamel", "scipy"]
 }

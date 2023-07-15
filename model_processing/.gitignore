@@ -1,5 +1,6 @@
 input/*.ply
 output/*.ply
+output/data
 input/data/*.ply
 
 
