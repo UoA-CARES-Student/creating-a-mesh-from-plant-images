@@ -74,31 +74,22 @@ def downsample_point_cloud(pcd):
 camera_matrix = read_camera_matrix(
     r"C:\Code\creating-a-mesh-from-plant-images\Data\Raw\13-42-50-tree\13a\1_camera_info.yaml"
 )
-print(camera_matrix)
 
 local_rotation, local_translation = read_pose_separate(
     r"C:\Code\creating-a-mesh-from-plant-images\Data\Raw\13-42-50-tree\13a\1_transform.yaml"
 )
-print(local_rotation, local_translation)
 
 global_rotation, global_translation = read_pose_separate(
     r"C:\Code\creating-a-mesh-from-plant-images\Data\Raw\13-42-50-tree\13a\world_marker_transform.yaml"
 )
-print(global_rotation, global_translation)
 
-pose_rotation = local_rotation * global_rotation
+pose_rotation = np.matmul(np.transpose(global_rotation), np.transpose(local_rotation))
 pose_translation = local_translation + global_translation
-
-print(pose_rotation, pose_translation)
-
-inverse_rotation = np.transpose(pose_rotation)
-
-print(inverse_rotation)
 
 width, height = 2464, 2056
 
-indices = [[0 for j in range(width)] for i in range(height)]
-depth = [[0 for j in range(width)] for i in range(height)]
+indices = [[-1 for j in range(width)] for i in range(height)]
+depth = [[-1 for j in range(width)] for i in range(height)]
 color = [[[0 for k in range(3)] for j in range(width)] for i in range(height)]
 
 print("indices & depth shape:", np.array(indices).shape)
@@ -117,14 +108,14 @@ points_in_frame = 0
 for i, p in enumerate(pcd0_point_array):
     # inverse translation back to image orientation
     point = p - pose_translation
-    point = np.matmul(inverse_rotation, point)
+    point = np.matmul(pose_rotation, point)
     # reprojection into 2d space
     fx = camera_matrix[0]
     fy = camera_matrix[4]
     cx = camera_matrix[2]
     cy = camera_matrix[5]
-    u = (fx * point[0] / point[2]) + cx
-    v = (fy * point[1] / point[2]) + cy
+    u = ((fx * point[0]) / point[2]) + cx
+    v = ((fy * point[1]) / point[2]) + cy
     point_2d = [u, v]
     # check if in image frame
     if (
@@ -136,7 +127,7 @@ for i, p in enumerate(pcd0_point_array):
         points_in_frame += 1
         # check if it is the closest point to the image frame
         if (
-            depth[round(point_2d[0])][round(point_2d[1])] == 0
+            depth[round(point_2d[0])][round(point_2d[1])] == -1
             or depth[round(point_2d[0])][round(point_2d[1])] > p[2]
         ):
             indices[round(point_2d[0])][round(point_2d[1])] = i
@@ -144,8 +135,13 @@ for i, p in enumerate(pcd0_point_array):
             color[round(point_2d[0])][round(point_2d[1])] = (
                 pcd0_color_array[i] * 255
             ).astype(np.uint8)
-print(points_in_frame, "/", pcd0_point_array.shape[0])
-print(np.array(color), np.array(color).shape)
+    print(i, "/", pcd0_point_array.shape[0])
+print("number of points in frame / number of points")
+print(
+    points_in_frame,
+    "/",
+    pcd0_point_array.shape[0],
+)
 im = Image.fromarray(np.array(color), mode="RGB")
 cv2.imwrite("test_color_cv2.png", np.array(color))
 im.save("test_color.png")
