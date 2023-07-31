@@ -1,7 +1,9 @@
 """Module providing functions for calculating metrics from a point cloud"""
 import math
+from numba import jit
 
 
+@jit(target_backend="cuda")
 def mean_square_error_one(processed_point_cloud, target_point_cloud):
     """Return a float representing the mse between the point clouds
     Implementation of MSE algorithm from https://arxiv.org/abs/1807.00253
@@ -25,6 +27,7 @@ def mean_square_error_one(processed_point_cloud, target_point_cloud):
     return distance_sum / len(target_point_cloud)
 
 
+@jit(target_backend="cuda")
 def mean_square_error_two(processed_point_cloud, target_point_cloud):
     """Return a float representing the mse between the point clouds
     Implementation of MSE algorithm from https://www.ncbi.nlm.nih.gov/pmc/articles/PMC9002461/
@@ -73,6 +76,7 @@ def mean_square_error_two(processed_point_cloud, target_point_cloud):
     return (section_one + section_two) / 2
 
 
+@jit(target_backend="cuda")
 def signal_to_noise_ratio_one(processed_point_cloud, target_point_cloud):
     """Return a float representing the snr between the point clouds
     Implementation of MSE algorithm from https://arxiv.org/abs/1807.00253
@@ -104,6 +108,7 @@ def signal_to_noise_ratio_one(processed_point_cloud, target_point_cloud):
     return 20 * math.log(sum_processed_point_cloud / distance_sum)
 
 
+@jit(target_backend="cuda")
 def signal_to_noise_ratio_two(processed_point_cloud, target_point_cloud):
     """Return a float representing the snr between the point clouds
     Implementation of MSE algorithm from https://www.ncbi.nlm.nih.gov/pmc/articles/PMC9002461/

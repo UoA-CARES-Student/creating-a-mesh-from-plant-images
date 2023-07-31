@@ -6,7 +6,7 @@ import open3d as o3d
 
 print("Starting point cloud combination")
 absolute_path = os.path.abspath(".")
-ply_point_cloud_paths = glob.glob(absolute_path + "/input/*.ply")
+ply_point_cloud_paths = glob.glob(absolute_path + "/input/data/*.ply")
 
 complete_point_cloud = o3d.geometry.PointCloud()
 
