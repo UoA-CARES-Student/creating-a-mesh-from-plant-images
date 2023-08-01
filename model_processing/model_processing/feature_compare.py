@@ -53,9 +53,9 @@ def run_feature_compare(point_cloud_result):
 
         partial_point_cloud_down.paint_uniform_color([1, 0.706, 0])
         point_cloud_result_down.paint_uniform_color([0, 0.651, 0.929])
-        o3d.visualization.draw_geometries(
-            [partial_point_cloud_down, point_cloud_result_down]
-        )
+        # o3d.visualization.draw_geometries(
+        #     [partial_point_cloud_down, point_cloud_result_down]
+        # )
 
         print("Load their FPFH feature and evaluate.")
         print("Black : matching distance > 0.8")
@@ -81,13 +81,13 @@ def run_feature_compare(point_cloud_result):
             print_progress_bar(
                 point_index, len(partial_point_cloud_down.points), prefix="MSE metric:"
             )
-        o3d.visualization.draw_geometries([partial_point_cloud_down])
+        # o3d.visualization.draw_geometries([partial_point_cloud_down])
 
         avg_dis = total_dis / len(partial_point_cloud_down.points)
         print(
-            "Average feature distance for partial point cloud "
-            + partial_point_cloud_index
-            + ":",
+            "Average feature distance for partial point cloud",
+            partial_point_cloud_index,
+            ":",
             avg_dis,
         )
         total_avg_distance_sum += avg_dis

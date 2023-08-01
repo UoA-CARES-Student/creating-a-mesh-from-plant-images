@@ -6,7 +6,6 @@ import numpy as np
 import open3d as o3d
 from PIL import Image
 from numba import jit
-from utils import print_progress_bar
 import cv2
 import math
 
@@ -87,13 +86,20 @@ def downsample_point_cloud(pcd):
 def run_photometric_error(point_cloud_result):
     print("Start photometric error metric")
     absolute_path = os.path.abspath("..")
-    image_paths = glob.glob(absolute_path + "/Data/13a/*_camera_info.yaml")
+    image_paths_single_digit = glob.glob(
+        absolute_path + "/Data/13-42-50-tree/13a/[0-9]_image_color.png"
+    )
+    image_paths_double_digit = glob.glob(
+        absolute_path + "/Data/13-42-50-tree/13a/[0-9][0-9]_image_color.png"
+    )
+
+    all_paths = image_paths_double_digit + image_paths_single_digit
 
     total_avg_depth_diff_sum = 0
     total_avg_color_diff_sum = 0
     total_image_frames = 0
 
-    for image_path_index, image_path in enumerate(image_paths):
+    for image_path_index, image_path in enumerate(all_paths):
         base_path = image_path[:-17]
 
         if base_path[-6:] == "marker":
@@ -130,12 +136,6 @@ def run_photometric_error(point_cloud_result):
 
         points_in_frame = 0
 
-        print_progress_bar(
-            0,
-            len(point_cloud_result_point_array),
-            prefix="Projecting onto image frame " + base_path[-2:] + ":",
-        )
-
         for p_index, p in enumerate(point_cloud_result_point_array):
             # inverse translation back to image orientation
             point = np.append(p, [1], axis=0)
@@ -168,11 +168,6 @@ def run_photometric_error(point_cloud_result):
                     color[round(point_2d[1])][round(point_2d[0])] = (
                         point_cloud_result_color_array[i] * 255
                     ).astype(np.uint8)
-            print_progress_bar(
-                p_index + 1,
-                len(point_cloud_result_point_array),
-                prefix="Projecting onto image frame " + base_path[-2:] + ":",
-            )
 
         cv2.imwrite("test_color_cv2.png", np.array(color)[..., ::-1].copy())
         # np.savetxt("test_indices.csv", indices, delimiter=",")
@@ -197,11 +192,15 @@ def run_photometric_error(point_cloud_result):
         color_diff_avg = color_diff_sum / points_in_frame
 
         print(
-            "Average depth difference for image frame " + base_path[-2:] + ":",
+            "Average depth difference for image frame",
+            base_path[-2:],
+            ":",
             depth_diff_avg,
         )
         print(
-            "Average color difference for image frame " + base_path[-2:] + ":",
+            "Average color difference for image frame",
+            base_path[-2:],
+            ":",
             color_diff_avg,
         )
 

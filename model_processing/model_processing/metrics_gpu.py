@@ -29,7 +29,6 @@ def mean_square_error_one(processed_point_cloud, target_point_cloud):
                 )
                 ** 2
             )
-        print("Processed point -", index_i)
     return distance_sum / len(target_point_cloud)
 
 
@@ -57,7 +56,6 @@ def mean_square_error_two(processed_point_cloud, target_point_cloud):
             if min_distance == -1 or distance < min_distance:
                 min_distance = distance
         distance_sum += min_distance
-        print("section 1 -", index_i)
     section_one = distance_sum / len(processed_point_cloud)
 
     distance_sum = 0.0
@@ -76,7 +74,6 @@ def mean_square_error_two(processed_point_cloud, target_point_cloud):
             if min_distance == -1 or distance < min_distance:
                 min_distance = distance
         distance_sum += min_distance
-        print("section 2 -", index_i)
     section_two = distance_sum / len(target_point_cloud)
 
     return (section_one + section_two) / 2
@@ -95,7 +92,6 @@ def signal_to_noise_ratio_one(processed_point_cloud, target_point_cloud):
         sum_processed_point_cloud += (
             math.sqrt(p_i[0] ** 2 + p_i[1] ** 2 + p_i[2] ** 2) ** 2
         )
-        print("processed point -", index_i)
 
     distance_sum = 0.0
     for index_i, p_i in enumerate(processed_point_cloud):
@@ -109,7 +105,6 @@ def signal_to_noise_ratio_one(processed_point_cloud, target_point_cloud):
                 )
                 ** 2
             )
-        print("processed point -", index_i)
 
     return 20 * math.log(sum_processed_point_cloud / distance_sum)
 
@@ -127,7 +122,6 @@ def signal_to_noise_ratio_two(processed_point_cloud, target_point_cloud):
         sum_processed_point_cloud += (
             math.sqrt(p_i[0] ** 2 + p_i[1] ** 2 + p_i[2] ** 2) ** 2
         )
-        print("processed point -", index_i)
 
     distance_sum = 0.0
     for index_i, p_i in enumerate(processed_point_cloud):
@@ -145,7 +139,6 @@ def signal_to_noise_ratio_two(processed_point_cloud, target_point_cloud):
             if min_distance == -1 or distance < min_distance:
                 min_distance = distance
         distance_sum += min_distance
-        print("section 1 -", index_i)
     section_one = distance_sum / len(processed_point_cloud)
 
     distance_sum = 0.0
@@ -164,7 +157,6 @@ def signal_to_noise_ratio_two(processed_point_cloud, target_point_cloud):
             if min_distance == -1 or distance < min_distance:
                 min_distance = distance
         distance_sum += min_distance
-        print("section 2 -", index_i)
     section_two = distance_sum / len(target_point_cloud)
 
     total = ((2.0 / len(processed_point_cloud)) * sum_processed_point_cloud) / (

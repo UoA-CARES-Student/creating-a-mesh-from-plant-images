@@ -78,14 +78,21 @@ def downsample_point_cloud(pcd):
 def run_photometric_error(point_cloud_result):
     print("Start photometric error metric")
     absolute_path = os.path.abspath("..")
-    image_paths = glob.glob(absolute_path + "/Data/13a/*_camera_info.yaml")
+    image_paths_single_digit = glob.glob(
+        absolute_path + "/Data/13-42-50-tree/13a/[0-9]_image_color.png"
+    )
+    image_paths_double_digit = glob.glob(
+        absolute_path + "/Data/13-42-50-tree/13a/[0-9][0-9]_image_color.png"
+    )
+
+    all_paths = image_paths_double_digit + image_paths_single_digit
 
     total_avg_depth_diff_sum = 0
     total_avg_color_diff_sum = 0
     total_image_frames = 0
 
-    for image_path_index, image_path in enumerate(image_paths):
-        base_path = image_path[:-17]
+    for image_path_index, image_path in enumerate(all_paths):
+        base_path = image_path[:-16]
 
         if base_path[-6:] == "marker":
             continue
@@ -102,7 +109,7 @@ def run_photometric_error(point_cloud_result):
 
         local_transform = read_pose(base_path + "_transform.yaml")
         global_transform = read_pose(
-            absolute_path + "/Data/13a/world_marker_transform.yaml"
+            absolute_path + "/Data/13-42-50-tree/13a/world_marker_transform.yaml"
         )
 
         pose_transform = np.matmul(global_transform, local_transform)
@@ -124,7 +131,7 @@ def run_photometric_error(point_cloud_result):
         print_progress_bar(
             0,
             len(point_cloud_result_point_array),
-            prefix="Projecting onto image frame " + base_path[-2:] + ":",
+            prefix="Projecting onto image frame " + str(base_path[-2:]) + ":",
         )
 
         for p_index, p in enumerate(point_cloud_result_point_array):
@@ -153,16 +160,16 @@ def run_photometric_error(point_cloud_result):
                     depth[round(point_2d[1])][round(point_2d[0])] == -1
                     or depth[round(point_2d[1])][round(point_2d[0])] > p[2]
                 ):
-                    indices[round(point_2d[1])][round(point_2d[0])] = i
+                    indices[round(point_2d[1])][round(point_2d[0])] = p_index
                     depth[round(point_2d[1])][round(point_2d[0])] = p[2]
 
                     color[round(point_2d[1])][round(point_2d[0])] = (
-                        point_cloud_result_color_array[i] * 255
+                        point_cloud_result_color_array[p_index] * 255
                     ).astype(np.uint8)
             print_progress_bar(
                 p_index + 1,
                 len(point_cloud_result_point_array),
-                prefix="Projecting onto image frame " + base_path[-2:] + ":",
+                prefix="Projecting onto image frame " + str(base_path[-2:]) + ":",
             )
 
         cv2.imwrite("test_color_cv2.png", np.array(color)[..., ::-1].copy())
@@ -188,11 +195,15 @@ def run_photometric_error(point_cloud_result):
         color_diff_avg = color_diff_sum / points_in_frame
 
         print(
-            "Average depth difference for image frame " + base_path[-2:] + ":",
+            "Average depth difference for image frame",
+            base_path[-2:],
+            ":",
             depth_diff_avg,
         )
         print(
-            "Average color difference for image frame " + base_path[-2:] + ":",
+            "Average color difference for image frame",
+            base_path[-2:],
+            ":",
             color_diff_avg,
         )
 

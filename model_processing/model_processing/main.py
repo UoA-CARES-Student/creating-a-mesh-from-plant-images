@@ -45,13 +45,18 @@ args = parser.parse_args()
 
 absolute_path = os.path.abspath(".")
 point_cloud_path = glob.glob(absolute_path + "/input/starting_point_cloud.ply")
-point_cloud_result = filtering.main(point_cloud_path)
+if len(point_cloud_path) == 0:
+    print(
+        "Starting point cloud data not found, please add to input folder with file name 'starting_point_cloud.ply'"
+    )
+else:
+    point_cloud_result = filtering.main(point_cloud_path[0])
 
-if args.display:
-    o3d.visualization.draw_geometries([point_cloud_result])
-if args.controlled or args.all:
-    validate.run_controlled_experiment()
-if args.feature or args.all:
-    feature_compare.run_feature_compare(point_cloud_result)
-if args.photometric or args.all:
-    photometric_error.run_photometric_error(point_cloud_result)
+    if args.display:
+        o3d.visualization.draw_geometries([point_cloud_result])
+    if args.controlled or args.all:
+        validate.run_controlled_experiment()
+    if args.feature or args.all:
+        feature_compare.run_feature_compare(point_cloud_result)
+    if args.photometric or args.all:
+        photometric_error.run_photometric_error(point_cloud_result)

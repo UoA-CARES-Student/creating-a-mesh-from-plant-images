@@ -10,7 +10,6 @@ import os
 import numpy as np
 import open3d as o3d
 from numba import jit
-from utils import print_progress_bar
 
 from numba.core.errors import NumbaDeprecationWarning, NumbaPendingDeprecationWarning
 import warnings
@@ -62,9 +61,9 @@ def run_feature_compare(point_cloud_result):
 
         partial_point_cloud_down.paint_uniform_color([1, 0.706, 0])
         point_cloud_result_down.paint_uniform_color([0, 0.651, 0.929])
-        o3d.visualization.draw_geometries(
-            [partial_point_cloud_down, point_cloud_result_down]
-        )
+        # o3d.visualization.draw_geometries(
+        #     [partial_point_cloud_down, point_cloud_result_down]
+        # )
 
         print("Load their FPFH feature and evaluate.")
         print("Black : matching distance > 0.8")
@@ -73,9 +72,6 @@ def run_feature_compare(point_cloud_result):
         total_dis = 0.0
 
         fpfh_tree = o3d.geometry.KDTreeFlann(point_cloud_result_fpfh)
-        print_progress_bar(
-            0, len(partial_point_cloud_down.points), prefix="MSE metric:"
-        )
         for point_index, point in enumerate(partial_point_cloud_down.points):
             [_, idx, _] = fpfh_tree.search_knn_vector_xd(
                 partial_point_cloud_fpfh.data[:, point_index], 1
@@ -87,16 +83,13 @@ def run_feature_compare(point_cloud_result):
             total_dis += dis
             c = (0.8 - np.fmin(dis, 0.8)) / 0.8
             partial_point_cloud_down.colors[point_index] = [c, c, c]
-            print_progress_bar(
-                point_index, len(partial_point_cloud_down.points), prefix="MSE metric:"
-            )
-        o3d.visualization.draw_geometries([partial_point_cloud_down])
+        # o3d.visualization.draw_geometries([partial_point_cloud_down])
 
         avg_dis = total_dis / len(partial_point_cloud_down.points)
         print(
-            "Average feature distance for partial point cloud "
-            + partial_point_cloud_index
-            + ":",
+            "Average feature distance for partial point cloud",
+            partial_point_cloud_index,
+            ":",
             avg_dis,
         )
         total_avg_distance_sum += avg_dis

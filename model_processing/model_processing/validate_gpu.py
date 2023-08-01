@@ -20,7 +20,7 @@ def run_controlled_experiment():
         add_noise_to_target_point_cloud()
         noisy_point_cloud_path = glob.glob(absolute_path + "/input/noisy.ply")
 
-        processed_point_cloud = filtering.main(noisy_point_cloud_path)
+        processed_point_cloud = filtering.main(noisy_point_cloud_path[0])
 
         target_point_cloud = o3d.io.read_point_cloud(target_point_cloud_path[0])
 
