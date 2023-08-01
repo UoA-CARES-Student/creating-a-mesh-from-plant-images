@@ -5,9 +5,16 @@ from scipy.spatial.transform import Rotation as R
 import numpy as np
 import open3d as o3d
 from PIL import Image
+from numba import jit
 from utils import print_progress_bar
 import cv2
 import math
+
+from numba.core.errors import NumbaDeprecationWarning, NumbaPendingDeprecationWarning
+import warnings
+
+warnings.simplefilter("ignore", category=NumbaDeprecationWarning)
+warnings.simplefilter("ignore", category=NumbaPendingDeprecationWarning)
 
 
 def read_camera_matrix(path):
@@ -68,6 +75,7 @@ def read_pose_separate(path):
     return rotation, translation
 
 
+@jit(target_backend="cuda")
 def downsample_point_cloud(pcd):
     voxel_size = 0.001
     print(":: Downsample with a voxel size %.3f." % voxel_size)
@@ -75,6 +83,7 @@ def downsample_point_cloud(pcd):
     return pcd_down
 
 
+@jit(target_backend="cuda")
 def run_photometric_error(point_cloud_result):
     print("Start photometric error metric")
     absolute_path = os.path.abspath("..")

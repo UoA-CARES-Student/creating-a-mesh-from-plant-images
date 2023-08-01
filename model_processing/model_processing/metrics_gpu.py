@@ -2,6 +2,12 @@
 import math
 from numba import jit
 
+from numba.core.errors import NumbaDeprecationWarning, NumbaPendingDeprecationWarning
+import warnings
+
+warnings.simplefilter("ignore", category=NumbaDeprecationWarning)
+warnings.simplefilter("ignore", category=NumbaPendingDeprecationWarning)
+
 
 @jit(target_backend="cuda")
 def mean_square_error_one(processed_point_cloud, target_point_cloud):

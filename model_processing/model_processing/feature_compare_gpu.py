@@ -9,9 +9,17 @@ import glob
 import os
 import numpy as np
 import open3d as o3d
+from numba import jit
 from utils import print_progress_bar
 
+from numba.core.errors import NumbaDeprecationWarning, NumbaPendingDeprecationWarning
+import warnings
 
+warnings.simplefilter("ignore", category=NumbaDeprecationWarning)
+warnings.simplefilter("ignore", category=NumbaPendingDeprecationWarning)
+
+
+@jit(target_backend="cuda")
 def preprocess_point_cloud(pcd):
     voxel_size = 0.05
     print(":: Downsample with a voxel size %.3f." % voxel_size)
@@ -32,6 +40,7 @@ def preprocess_point_cloud(pcd):
     return pcd_down, pcd_fpfh
 
 
+@jit(target_backend="cuda")
 def run_feature_compare(point_cloud_result):
     print("Start feature compare metric")
     absolute_path = os.path.abspath(".")
