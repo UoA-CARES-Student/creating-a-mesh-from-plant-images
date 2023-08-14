@@ -10,7 +10,7 @@ import numpy as np
 
 
 def pass_through_filter(pcd, index):
-    depth_range = [0.2, 1]
+    depth_range = [0.1, 0.6]
 
     # read pose
     absolute_path = os.path.abspath("..")
@@ -39,7 +39,7 @@ def pass_through_filter(pcd, index):
 
         # if inside range then include
         if depth > depth_range[0] and depth < depth_range[1]:
-            filtered_points.append(point)
+            filtered_points.append(p)
             filtered_colors.append(pcd_color_array[p_index])
 
     pcd.points = o3d.utility.Vector3dVector(filtered_points)
@@ -108,5 +108,4 @@ def create_point_cloud():
 
     print("Done! The output.ply file has been written to the output folder")
 
-
-create_point_cloud()
+    return complete_point_cloud

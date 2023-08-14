@@ -1,5 +1,6 @@
 import open3d as o3d
 import numpy as np
+import create_complete_model
 
 
 def downsample_point_cloud(pcd):
@@ -35,9 +36,9 @@ def statistical_outlier_removal(pcd):
 
 
 def main(path):
-    point_cloud = o3d.io.read_point_cloud(path)
+    point_cloud = create_complete_model.create_point_cloud()
     point_cloud = downsample_point_cloud(point_cloud)
     # point_cloud = pass_through_filter(point_cloud)
-    point_cloud_result = statistical_outlier_removal(point_cloud)
+    point_cloud = statistical_outlier_removal(point_cloud)
 
-    return point_cloud_result
+    return point_cloud
