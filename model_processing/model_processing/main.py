@@ -7,6 +7,7 @@ import filtering
 import validate
 import feature_compare
 import photometric_error
+import create_mesh
 
 parser = argparse.ArgumentParser()
 parser.add_argument(
@@ -60,3 +61,8 @@ else:
         feature_compare.run_feature_compare(point_cloud_result)
     if args.photometric or args.all:
         photometric_error.run_photometric_error(point_cloud_result)
+
+    mesh = create_mesh.create_ball_pivot_mesh(point_cloud_result)
+
+    if args.display:
+        o3d.visualization.draw([mesh])

@@ -37,7 +37,7 @@ def statistical_outlier_removal(pcd):
 
 def main(path):
     point_cloud = create_complete_model.create_point_cloud()
-    point_cloud = downsample_point_cloud(point_cloud)
+    # point_cloud = downsample_point_cloud(point_cloud)
     # point_cloud = pass_through_filter(point_cloud)
     point_cloud = statistical_outlier_removal(point_cloud)
 
