@@ -27,25 +27,25 @@ parser.add_argument(
 parser.add_argument(
     "-a",
     "--all",
-    help="runs all metrics without gpu",
+    help="runs all metrics",
     action="store_true",
 )
 parser.add_argument(
     "-c",
     "--controlled",
-    help="runs the controlled experiment metrics without gpu",
+    help="runs the controlled experiment metrics",
     action="store_true",
 )
 parser.add_argument(
     "-f",
     "--feature",
-    help="runs the feature compare metric without gpu",
+    help="runs the feature compare metric",
     action="store_true",
 )
 parser.add_argument(
     "-p",
     "--photometric",
-    help="runs the photometric error metric without gpu",
+    help="runs the photometric error metric",
     action="store_true",
 )
 

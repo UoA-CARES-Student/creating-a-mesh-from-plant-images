@@ -46,7 +46,32 @@ To deactivate the environment run
 deactivate
 ```
 
-## Running the Projects
+## Running the Project
+
+To run this project, run one of the following command after completing the installation sets above
+
+If you do not want to use a gpu to run
+
+```bash
+python model_processing/main.py
+```
+
+If you do want to use a gpu to run
+
+```bash
+python model_processing/main_gpu.py
+```
+
+With each of these commands you can add the following flags to run specific functions, supports multiple flags if you want to regenerate the model, display it, and run all metrics
+
+| Shorten | Full              | Function                               |
+| ------- | ----------------- | -------------------------------------- |
+| `-g`    | '`--generate`'    | regenerates the complete model         |
+| `-d`    | '`--display`'     | displays the result after filtering    |
+| `-a`    | '`--all`'         | runs all metrics                       |
+| `-c`    | '`--controlled`'  | runs the controlled experiment metrics |
+| `-f`    | '`--feature`'     | runs the feature compare metric        |
+| `-p`    | '`--photometric`' | runs the photometric error metric      |
 
 ## Troubleshooting
 
