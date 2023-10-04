@@ -78,7 +78,9 @@ creating-a-mesh-from-plant-images
     │   └── validate_gpu.py
     ├── output
     │   └── README.md
+    ├── License
     ├── requirements.txt
+    ├── requirements_gpu.txt
     └── setup.py
 
 </pre>
@@ -113,6 +115,7 @@ And describe what each file does.
 - model_processing/model_processing/validate_gpu.py: controls running controlled experiment metrics on gpu
 - model_processing/output: folder for model processing point cloud outputs
 - model_processing/output/README.md: description of file output naming conventions
+- model_processing/License: license for model processing project
 - model_processing/requirements.txt: project dependencies
 - model_processing/requirements_gpu.txt: project dependencies on gpu
 - model_processing/setup.py: project set up description
