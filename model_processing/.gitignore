@@ -3,6 +3,10 @@ output/*.ply
 output/data
 input/data/*.ply
 
+*.glb
+*.ply
+*.obj
+
 
 # Created by https://www.toptal.com/developers/gitignore/api/python,venv
 # Edit at https://www.toptal.com/developers/gitignore?templates=python,venv

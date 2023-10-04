@@ -5,7 +5,7 @@ import colorsys
 
 
 def voxel_downsample_point_cloud(pcd):
-    voxel_size = 0.01
+    voxel_size = 0.00001
     print(":: Downsample with a voxel size %.3f." % voxel_size)
     pcd_down = pcd.voxel_down_sample(voxel_size)
     return pcd_down
@@ -19,9 +19,9 @@ def random_downsample(pcd):
 
 
 def uniform_downsample(pcd):
-    every_k_points = 10000
+    every_k_points = 5
     print(":: Uniform downsample with every k points removed %.3f." % every_k_points)
-    pcd_down = o3d.geometry.uniform_downsample(pcd, every_k_points)
+    pcd_down = pcd.uniform_down_sample(every_k_points)
     return pcd_down
 
 
@@ -96,10 +96,10 @@ def main(path):
         print("Reading from path: ", path)
         point_cloud = o3d.io.read_point_cloud(path)
 
-    point_cloud = pass_through_filter_2(point_cloud)
-    point_cloud = statistical_outlier_removal(point_cloud)
-    # point_cloud = radius_outlier_removal(point_cloud)
+    # point_cloud = pass_through_filter_2(point_cloud)
 
-    point_cloud = random_downsample(point_cloud)
+    # point_cloud = voxel_downsample_point_cloud(point_cloud)
+    # point_cloud = statistical_outlier_removal(point_cloud)
+    # point_cloud = radius_outlier_removal(point_cloud)
 
     return point_cloud
