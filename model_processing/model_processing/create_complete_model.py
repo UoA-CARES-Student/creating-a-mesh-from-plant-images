@@ -3,6 +3,7 @@ single point cloud file"""
 import glob
 import os
 import open3d as o3d
+import copy
 
 from ruamel import yaml
 from scipy.spatial.transform import Rotation as R
@@ -31,16 +32,29 @@ def pass_through_filter(pcd, index):
     filtered_colors = []
 
     for p_index, p in enumerate(pcd_point_array):
+        if p_index % 50000 == 0 and p_index != 0:
+            print(p_index)
         # inverse translation back to image orientation
         point = np.append(p, [1], axis=0)
         point = np.matmul(pose_inverse, point)
         point = [point[0] / point[3], point[1] / point[3], point[2] / point[3]]
         depth = point[2]
 
+        # new_point = [point[0], point[1], 0.6, 1]
+        # new_point = np.matmul(pose_transform, new_point)
+        # new_point = [
+        #     new_point[0] / new_point[3],
+        #     new_point[1] / new_point[3],
+        #     new_point[2] / new_point[3],
+        # ]
+
         # if inside range then include
         if depth > depth_range[0] and depth < depth_range[1]:
             filtered_points.append(p)
             filtered_colors.append(pcd_color_array[p_index])
+
+            # filtered_points.append(new_point)
+            # filtered_colors.append([0.7, 0.7, 0.7])
 
     pcd.points = o3d.utility.Vector3dVector(filtered_points)
     pcd.colors = o3d.utility.Vector3dVector(filtered_colors)

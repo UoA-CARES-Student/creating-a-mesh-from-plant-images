@@ -9,8 +9,15 @@ import feature_compare
 import photometric_error
 import feature_compare_gpu
 import photometric_error_gpu
+import create_mesh
 
 parser = argparse.ArgumentParser()
+parser.add_argument(
+    "-g",
+    "--generate",
+    help="regenerates the complete model",
+    action="store_true",
+)
 parser.add_argument(
     "-d",
     "--display",
@@ -52,7 +59,10 @@ if len(point_cloud_path) == 0:
         "Starting point cloud data not found, please add to input folder with file name 'starting_point_cloud.ply'"
     )
 else:
-    point_cloud_result = filtering.main(point_cloud_path[0])
+    if args.generate:
+        point_cloud_result = filtering.main(None)
+    else:
+        point_cloud_result = filtering.main(point_cloud_path[0])
 
     if args.display:
         o3d.visualization.draw_geometries([point_cloud_result])
@@ -62,3 +72,17 @@ else:
         feature_compare.run_feature_compare(point_cloud_result)
     if args.photometric or args.all:
         photometric_error.run_photometric_error(point_cloud_result)
+
+    # mesh = create_mesh.create_poissons_mesh(point_cloud_result)
+
+    o3d.io.write_point_cloud(
+        absolute_path + "/output/filtered_output.ply",
+        point_cloud_result,
+        print_progress=True,
+        write_ascii=True,
+    )
+
+    print("Done! The filtered_output.ply file has been written to the output folder")
+
+    # if args.display:
+    #     o3d.visualization.draw([mesh])
