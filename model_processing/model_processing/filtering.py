@@ -99,7 +99,8 @@ def main(path):
     # point_cloud = pass_through_filter_2(point_cloud)
 
     # point_cloud = voxel_downsample_point_cloud(point_cloud)
-    # point_cloud = statistical_outlier_removal(point_cloud)
+    point_cloud = random_downsample(point_cloud)
+    point_cloud = statistical_outlier_removal(point_cloud)
     # point_cloud = radius_outlier_removal(point_cloud)
 
     return point_cloud
